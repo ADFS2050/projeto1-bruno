@@ -1,8 +1,10 @@
 import express from "express"
-import conexao from "../infra/conexao.js"
+import conexao from "./app/database/conexao.js"
+import CursoController from './app/controller/CursoController.js'
+
 const app = express()
 
-app.use(express.json())
+//app.use(express.json())
 
 function buscarCursosPorId(id){
     return cursos.filter( curso => curso.id == id)
@@ -12,16 +14,7 @@ function buscarIndexCurso(id){
     return cursos.findIndex( curso => curso.id == id)
 }
 
-app.get('/cursos' , (req, res)=> {
-    const sql = "select * from curso;"
-    conexao.query(sql, (error, result) =>{
-        if (error) {
-            console.log(error)
-        } else {
-            res.status(200).json(result)
-        }
-    })
-}) 
+app.get('/cursos', CursoController.index) 
 
 app.get('/cursos/:id',(req, res)=> {
     const { id } = req.params
